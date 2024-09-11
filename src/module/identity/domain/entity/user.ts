@@ -1,6 +1,6 @@
-import { UserRole } from '../enum/user-role.enum';
 import { IdentityDomainException } from '../exception/identity-domain.exception';
 import { Identifier, FullName } from '../value-object';
+import { UserRole } from '../value-object/user-role';
 
 export class User {
 	private id: Identifier;
@@ -35,6 +35,10 @@ export class User {
 
 	getRole(): UserRole {
 		return this.role;
+	}
+
+	changeRole(newRole: UserRole): void {
+		this.role = newRole;
 	}
 
 	validate(): void {
