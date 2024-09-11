@@ -65,4 +65,19 @@ describe('User unit tests', () => {
 			new User(id, fullName, null, userData.role);
 		}).toThrow(new IdentityDomainException('User e-mail is required'));
 	});
+
+	it('should return an IdentityDomainException if user role is not provided', () => {
+		const userData = {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'john@example.com',
+		};
+
+		const id = new Identifier();
+		const fullName = new FullName(userData.firstName, userData.lastName);
+
+		expect(() => {
+			new User(id, fullName, userData.email, null);
+		}).toThrow(new IdentityDomainException('User role is required'));
+	});
 });
