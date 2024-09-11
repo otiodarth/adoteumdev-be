@@ -102,6 +102,8 @@ describe('User unit tests', () => {
 
 		expect(() => {
 			new User(id, fullName, userData.email, new UserRole(userData.role));
-		}).toThrow(new IdentityDomainException('User role is invalid'));
+		}).toThrow(
+			new IdentityDomainException(`User role ${userData.role} is invalid`),
+		);
 	});
 });
