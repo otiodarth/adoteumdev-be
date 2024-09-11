@@ -41,5 +41,9 @@ export class User {
 		if (!this.email) {
 			throw new IdentityDomainException('User e-mail is required');
 		}
+
+		if (!this.role) {
+			throw new IdentityDomainException('User role is required');
+		}
 	}
 }
