@@ -1,22 +1,19 @@
 import { IdentityDomainException } from '../exception/identity-domain.exception';
+import { ValueObject } from './value-object';
 
-export class UserRole {
-	static readonly MENTEE = 'MENTEE';
-	static readonly MENTOR = 'MENTOR';
-	private readonly _value: string;
-
+export class UserRole extends ValueObject<string> {
 	constructor(value: string) {
 		if (!UserRole.isValidRole(value)) {
 			throw new IdentityDomainException(`User role ${value} is invalid`);
 		}
-		this._value = value;
+		super(value);
 	}
 
 	get value(): string {
 		return this._value;
 	}
 
-	static isValidRole(value: string): boolean {
-		return value === UserRole.MENTEE || value === UserRole.MENTOR;
+	static isValidRole(role: string): boolean {
+		return ['mentee', 'mentor'].includes(role);
 	}
 }

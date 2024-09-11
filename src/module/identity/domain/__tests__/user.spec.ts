@@ -7,7 +7,7 @@ const validUserData = {
 	firstName: 'John',
 	lastName: 'Doe',
 	email: 'john@example.com',
-	role: new UserRole('MENTEE'),
+	role: new UserRole('mentee'),
 };
 
 describe('User unit tests', () => {
@@ -39,7 +39,7 @@ describe('User unit tests', () => {
 		const userData = {
 			lastName: 'Doe',
 			email: 'john@example.com',
-			role: new UserRole('MENTEE'),
+			role: new UserRole('mentee'),
 		};
 
 		expect(() => {
@@ -51,7 +51,7 @@ describe('User unit tests', () => {
 		const userData = {
 			firstName: 'John',
 			email: 'john@example.com',
-			role: new UserRole('MENTEE'),
+			role: new UserRole('mentee'),
 		};
 
 		expect(() => {
@@ -63,7 +63,7 @@ describe('User unit tests', () => {
 		const userData = {
 			firstName: 'John',
 			lastName: 'Doe',
-			role: new UserRole('MENTEE'),
+			role: new UserRole('mentee'),
 		};
 
 		const id = new Identifier();

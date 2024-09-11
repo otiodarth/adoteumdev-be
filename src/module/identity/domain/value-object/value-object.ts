@@ -1,23 +1,18 @@
 export abstract class ValueObject<T> {
-	protected readonly value: T;
+	protected readonly _value: T;
 
-	constructor(aValue: T) {
-		this.value = aValue;
+	constructor(value: T) {
+		this._value = value;
 	}
 
 	equals(vo?: ValueObject<T>): boolean {
 		if (vo === null || vo === undefined) {
 			return false;
 		}
-
-		if (vo.constructor !== this.constructor) {
-			return false;
-		}
-
-		return vo.value === this.value;
+		return this._value === vo._value;
 	}
 
-	getValue(): T {
-		return this.value;
+	get value(): T {
+		return this._value;
 	}
 }
