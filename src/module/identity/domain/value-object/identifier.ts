@@ -1,25 +1,22 @@
 import { v4 as uuidv4 } from 'uuid';
 import { IdentityDomainException } from '../exception/identity-domain.exception';
+import { ValueObject } from './value-object';
 
-export class Identifier {
-	private readonly id: string;
-
+export class Identifier extends ValueObject<string> {
 	constructor(id?: string) {
-		if (id) {
-			if (!this.isValidUUID(id)) {
-				throw new IdentityDomainException('UUID invalid format');
-			}
-			this.id = id;
-		} else {
-			this.id = uuidv4();
+		const value = id ? id : uuidv4();
+
+		if (!Identifier.isValidUUID(value)) {
+			throw new IdentityDomainException('UUID invalid format');
 		}
+		super(value);
 	}
 
 	getId(): string {
-		return this.id;
+		return this._value;
 	}
 
-	private isValidUUID(id: string): boolean {
+	private static isValidUUID(id: string): boolean {
 		const uuidPattern =
 			/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 		return uuidPattern.test(id);
