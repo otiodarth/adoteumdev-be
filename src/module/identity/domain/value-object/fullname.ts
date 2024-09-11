@@ -1,10 +1,12 @@
 import { IdentityDomainException } from '../exception/identity-domain.exception';
+import { ValueObject } from './value-object';
 
-export class FullName {
-	private firstName: string;
-	private lastName: string;
+export class FullName extends ValueObject<string> {
+	private readonly firstName: string;
+	private readonly lastName: string;
 
 	constructor(aFirstName: string, aLastName: string) {
+		super(`${aFirstName} ${aLastName}`);
 		this.firstName = aFirstName;
 		this.lastName = aLastName;
 		this.validate();
@@ -19,7 +21,7 @@ export class FullName {
 	}
 
 	toString(): string {
-		return `${this.firstName} ${this.lastName}`;
+		return this._value;
 	}
 
 	private validate(): void {
