@@ -50,4 +50,19 @@ describe('User unit tests', () => {
 			new FullName(userData.firstName, null);
 		}).toThrow(new IdentityDomainException('Last name is required'));
 	});
+
+	it('should return an IdentityDomainException if email is not provided', () => {
+		const userData = {
+			firstName: 'John',
+			lastName: 'Doe',
+			role: UserRole.MENTEE,
+		};
+
+		const id = new Identifier();
+		const fullName = new FullName(userData.firstName, userData.lastName);
+
+		expect(() => {
+			new User(id, fullName, null, userData.role);
+		}).toThrow(new IdentityDomainException('User e-mail is required'));
+	});
 });
