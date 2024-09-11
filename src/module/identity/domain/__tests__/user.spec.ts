@@ -1,5 +1,6 @@
 import { User } from '../entity/user';
 import { UserRole } from '../enum/user-role.enum';
+import { IdentityDomainException } from '../exception/identity-domain.exception';
 import { Identifier, FullName } from '../value-object';
 
 describe('User unit tests', () => {
@@ -24,5 +25,17 @@ describe('User unit tests', () => {
 		);
 		expect(newUser.getEmail()).toBe(userData.email);
 		expect(newUser.getRole()).toBe(userData.role);
+	});
+
+	it('should return an IdentityDomainException if firstname is not provided', () => {
+		const userData = {
+			lastName: 'Doe',
+			email: 'john@example.com',
+			role: UserRole.MENTEE,
+		};
+
+		expect(() => {
+			new FullName(null, userData.lastName);
+		}).toThrow(new IdentityDomainException('First name is required'));
 	});
 });
