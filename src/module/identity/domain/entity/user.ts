@@ -1,4 +1,5 @@
 import { UserRole } from '../enum/user-role.enum';
+import { IdentityDomainException } from '../exception/identity-domain.exception';
 import { Identifier, FullName } from '../value-object';
 
 export class User {
@@ -17,6 +18,7 @@ export class User {
 		this.fullName = fullName;
 		this.email = email;
 		this.role = role;
+		this.validate();
 	}
 
 	getId(): Identifier {
@@ -33,5 +35,11 @@ export class User {
 
 	getRole(): UserRole {
 		return this.role;
+	}
+
+	validate(): void {
+		if (!this.email) {
+			throw new IdentityDomainException('User e-mail is required');
+		}
 	}
 }
