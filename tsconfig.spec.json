@@ -1,0 +1,12 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"module": "commonjs",
+		"types": ["jest"],
+		"paths": {
+			"@shared/*": ["src/module/shared/*"],
+			"@userManagement/*": ["src/module/user-management/*"]
+		}
+	},
+	"include": ["src/**/*.ts", "test/**/*.ts"]
+}

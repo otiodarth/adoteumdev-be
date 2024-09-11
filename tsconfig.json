@@ -1,0 +1,17 @@
+{
+	"compilerOptions": {
+		"module": "commonjs",
+		"target": "ES2021",
+		"baseUrl": ".",
+		"paths": {
+			"@shared/*": ["src/module/shared/*"],
+			"@identity/*": ["src/module/identity/*"]
+		},
+		"outDir": "./dist",
+		"sourceMap": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"allowSyntheticDefaultImports": true,
+		"types": ["@types/jest"]
+	}
+}
