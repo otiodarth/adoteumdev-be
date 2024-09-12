@@ -4,8 +4,9 @@
 		"target": "ES2021",
 		"baseUrl": ".",
 		"paths": {
+			"@identity/*": ["src/module/identity/*"],
 			"@shared/*": ["src/module/shared/*"],
-			"@identity/*": ["src/module/identity/*"]
+			"@persistence/*": ["src/module/shared/infra/module/persistence/*"]
 		},
 		"outDir": "./dist",
 		"sourceMap": true,

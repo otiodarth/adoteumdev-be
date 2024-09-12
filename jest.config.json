@@ -1,0 +1,14 @@
+{
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": "src",
+	"testRegex": ".*\\.spec\\.ts$",
+	"transform": {
+		"^.+\\.(t|j)s$": "ts-jest"
+	},
+	"collectCoverageFrom": ["**/*.(t|j)s"],
+	"moduleNameMapper": {
+		"@persistence/(.*)$": "<rootDir>/module/shared/infra/module/persistence/$1"
+	},
+	"coverageDirectory": "../coverage",
+	"testEnvironment": "node"
+}

@@ -4,8 +4,8 @@
 		"module": "commonjs",
 		"types": ["jest"],
 		"paths": {
-			"@shared/*": ["src/module/shared/*"],
-			"@userManagement/*": ["src/module/user-management/*"]
+			"@identity/*": ["src/module/identity/*"],
+			"@shared/*": ["src/module/shared/*"]
 		}
 	},
 	"include": ["src/**/*.ts", "test/**/*.ts"]
