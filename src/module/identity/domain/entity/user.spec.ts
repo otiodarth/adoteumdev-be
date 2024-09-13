@@ -1,12 +1,14 @@
-import { User } from '../entity/user';
-import { IdentityDomainException } from '../exception/identity-domain.exception';
 import { FullName, Identifier, UserRole } from '../value-object';
+
+import { IdentityDomainException } from '../exception/identity-domain.exception';
+import { User } from '../entity/user';
 
 const validUserData = {
 	firstName: 'John',
 	lastName: 'Doe',
 	email: 'john@example.com',
 	role: new UserRole('mentee'),
+	password: 'hashedPassword',
 };
 
 describe('User unit tests', () => {
@@ -22,6 +24,7 @@ describe('User unit tests', () => {
 			fullName,
 			validUserData.email,
 			validUserData.role,
+			validUserData.password,
 		);
 
 		expect(newUser.getId()).toBe(id);
@@ -63,13 +66,14 @@ describe('User unit tests', () => {
 			firstName: 'John',
 			lastName: 'Doe',
 			role: new UserRole('mentee'),
+			password: 'hashedPassword',
 		};
 
 		const id = new Identifier();
 		const fullName = new FullName(userData.firstName, userData.lastName);
 
 		expect(() => {
-			new User(id, fullName, null, userData.role);
+			new User(id, fullName, null, userData.role, userData.password);
 		}).toThrow(new IdentityDomainException('User e-mail is required'));
 	});
 
@@ -78,13 +82,14 @@ describe('User unit tests', () => {
 			firstName: 'John',
 			lastName: 'Doe',
 			email: 'john@example.com',
+			password: 'hashedPassword',
 		};
 
 		const id = new Identifier();
 		const fullName = new FullName(userData.firstName, userData.lastName);
 
 		expect(() => {
-			new User(id, fullName, userData.email, null);
+			new User(id, fullName, userData.email, null, userData.password);
 		}).toThrow(new IdentityDomainException('User role is required'));
 	});
 
@@ -94,13 +99,20 @@ describe('User unit tests', () => {
 			lastName: 'Doe',
 			email: 'john@example.com',
 			role: 'example',
+			password: 'hashedPassword',
 		};
 
 		const id = new Identifier();
 		const fullName = new FullName(userData.firstName, userData.lastName);
 
 		expect(() => {
-			new User(id, fullName, userData.email, new UserRole(userData.role));
+			new User(
+				id,
+				fullName,
+				userData.email,
+				new UserRole(userData.role),
+				userData.password,
+			);
 		}).toThrow(
 			new IdentityDomainException(`User role ${userData.role} is invalid`),
 		);
