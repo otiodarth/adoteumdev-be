@@ -15,6 +15,7 @@ export class UserManagementMapper {
 			fullname,
 			entity.email,
 			new UserRole(entity.role),
+			entity.password,
 		);
 		return user;
 	}

@@ -17,6 +17,9 @@ export class UserEntity {
 	@Column()
 	role: string;
 
+	@Column()
+	password: string;
+
 	constructor(
 		anId: string,
 		aFirstname: string,
