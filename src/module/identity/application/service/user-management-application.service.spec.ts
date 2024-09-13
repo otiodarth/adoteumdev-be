@@ -34,6 +34,7 @@ describe('UserManagementApplicationService', () => {
 					provide: UserManagementRepository,
 					useValue: {
 						create: jest.fn(),
+						findByEmail: jest.fn(),
 					},
 				},
 				{
@@ -87,6 +88,13 @@ describe('UserManagementApplicationService', () => {
 			new IdentityDomainException(
 				'Password and password confirmation do not match',
 			),
+		);
+	});
+
+	it('should throw an exception if user email already exists', async () => {
+		repository.findByEmail = jest.fn().mockResolvedValue(validUserData);
+		expect(service.createUser(validUserData)).rejects.toThrow(
+			new IdentityDomainException('E-mail already exists'),
 		);
 	});
 });
