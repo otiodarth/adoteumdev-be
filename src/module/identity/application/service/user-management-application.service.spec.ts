@@ -3,6 +3,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { CreateUserInput } from '../input/create-user.input';
 import { EncryptService } from '@identity/domain/service/encrypt-service';
+import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserManagementApplicationService } from './user-management-application.service';
 import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
@@ -14,6 +15,7 @@ const validUserData: CreateUserInput = {
 	email: 'john@example.com',
 	role: new UserRole('mentee'),
 	password: 'plainText',
+	passwordConfirmation: 'plainText',
 };
 
 describe('UserManagementApplicationService', () => {
@@ -67,5 +69,18 @@ describe('UserManagementApplicationService', () => {
 		expect(createdUser.getEmail()).toBe(validUserData.email);
 		expect(createdUser.getRole()).toEqual(validUserData.role);
 		expect(createdUser.getPassword()).toBe('hashedPassword');
+	});
+
+	it('should throw an exception if password and password confirmation do not match', async () => {
+		const invalidUserData = {
+			...validUserData,
+			passwordConfirmation: 'differentPassword',
+		};
+
+		await expect(service.createUser(invalidUserData)).rejects.toThrow(
+			new IdentityDomainException(
+				'Password and password confirmation do not match',
+			),
+		);
 	});
 });
