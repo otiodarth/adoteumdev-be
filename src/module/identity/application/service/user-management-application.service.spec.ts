@@ -2,6 +2,7 @@ import { FullName, Identifier, UserRole } from '@identity/domain/value-object';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { CreateUserInput } from '../input/create-user.input';
+import { EncryptService } from '@identity/domain/service/encrypt-service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserManagementApplicationService } from './user-management-application.service';
 import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
@@ -12,11 +13,13 @@ const validUserData: CreateUserInput = {
 	lastName: 'Doe',
 	email: 'john@example.com',
 	role: new UserRole('mentee'),
+	password: 'plainText',
 };
 
 describe('UserManagementApplicationService', () => {
 	let service: UserManagementApplicationService;
 	let repository: UserManagementRepository;
+	let encryptService: EncryptService;
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
@@ -29,6 +32,12 @@ describe('UserManagementApplicationService', () => {
 						create: jest.fn(),
 					},
 				},
+				{
+					provide: EncryptService,
+					useValue: {
+						encrypt: jest.fn().mockResolvedValue('hashedPassword'),
+					},
+				},
 			],
 		}).compile();
 
@@ -36,16 +45,19 @@ describe('UserManagementApplicationService', () => {
 			UserManagementApplicationService,
 		);
 		repository = module.get<UserManagementRepository>(UserManagementRepository);
+		encryptService = module.get<EncryptService>(EncryptService);
 	});
 
 	it('should create a new user and with correct values', async () => {
 		const createdUser = await service.createUser(validUserData);
 
+		expect(encryptService.encrypt).toHaveBeenCalledWith(validUserData.password);
 		expect(repository.create).toHaveBeenCalledWith({
 			id: expect.any(Identifier),
 			fullName: new FullName(validUserData.firstName, validUserData.lastName),
 			email: validUserData.email,
 			role: validUserData.role,
+			password: 'hashedPassword',
 		});
 
 		expect(createdUser.getId().getId()).toBeTruthy();
@@ -54,5 +66,6 @@ describe('UserManagementApplicationService', () => {
 		);
 		expect(createdUser.getEmail()).toBe(validUserData.email);
 		expect(createdUser.getRole()).toEqual(validUserData.role);
+		expect(createdUser.getPassword()).toBe('hashedPassword');
 	});
 });
