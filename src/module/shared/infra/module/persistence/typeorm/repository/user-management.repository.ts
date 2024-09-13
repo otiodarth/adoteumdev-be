@@ -16,9 +16,10 @@ export class UserManagementRepository
 		private readonly repository: Repository<UserEntity>,
 	) {}
 
-	async create(entity: User): Promise<void> {
+	async create(entity: User): Promise<User> {
 		const userEntity = UserManagementMapper.toEntity(entity);
-		await this.repository.save(userEntity);
+		const createdUser = await this.repository.save(userEntity);
+		return UserManagementMapper.toDomain(createdUser);
 	}
 
 	async update(entity: User): Promise<void> {

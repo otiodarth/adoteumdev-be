@@ -1,6 +1,7 @@
 import { FullName, Identifier, UserRole } from '../../domain/value-object';
 
 import { CreateUserInput } from '../input/create-user.input';
+import { CreateUserOutput } from '../output/create-user.output';
 import { EncryptService } from '@identity/domain/service/encrypt-service';
 import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
 import { Injectable } from '@nestjs/common';
@@ -14,7 +15,7 @@ export class UserManagementApplicationService {
 		private readonly encryptService: EncryptService,
 	) {}
 
-	async createUser(input: CreateUserInput): Promise<User> {
+	async createUser(input: CreateUserInput): Promise<CreateUserOutput> {
 		if (input.password !== input.passwordConfirmation) {
 			throw new IdentityDomainException(
 				'Password and password confirmation do not match',
@@ -30,7 +31,7 @@ export class UserManagementApplicationService {
 			hashedPassword,
 		);
 
-		await this._repository.create(user);
-		return user;
+		const createdUser = await this._repository.create(user);
+		return CreateUserOutput.toOutput(createdUser);
 	}
 }
