@@ -6,4 +6,5 @@ export class CreateUserInput {
 	email: string;
 	role: UserRole;
 	password: string;
+	passwordConfirmation: string;
 }

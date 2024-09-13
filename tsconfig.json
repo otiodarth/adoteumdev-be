@@ -6,7 +6,8 @@
 		"paths": {
 			"@identity/*": ["src/module/identity/*"],
 			"@shared/*": ["src/module/shared/*"],
-			"@persistence/*": ["src/module/shared/infra/module/persistence/*"]
+			"@persistence/*": ["src/module/shared/infra/module/persistence/*"],
+			"@criptography/*": ["src/module/shared/infra/module/criptography/*"]
 		},
 		"outDir": "./dist",
 		"sourceMap": true,
