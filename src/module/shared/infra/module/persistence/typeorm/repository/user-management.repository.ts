@@ -36,4 +36,14 @@ export class UserManagementRepository
 		const users = await this.repository.find();
 		return users.map((user) => UserManagementMapper.toDomain(user));
 	}
+
+	async findByEmail(email: string): Promise<User | null> {
+		const user = await this.repository.findOne({
+			where: { email },
+		});
+		if (!user) {
+			return null;
+		}
+		return UserManagementMapper.toDomain(user);
+	}
 }

@@ -16,6 +16,14 @@ export class UserManagementApplicationService {
 	) {}
 
 	async createUser(input: CreateUserInput): Promise<CreateUserOutput> {
+		const userEmailAlreadyExists = await this._repository.findByEmail(
+			input.email,
+		);
+
+		if (userEmailAlreadyExists) {
+			throw new IdentityDomainException('E-mail already exists');
+		}
+
 		if (input.password !== input.passwordConfirmation) {
 			throw new IdentityDomainException(
 				'Password and password confirmation do not match',

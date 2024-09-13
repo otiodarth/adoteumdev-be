@@ -2,4 +2,6 @@ import { DefaultRepositoryInterface } from '../../../shared/infra/module/persist
 import { User } from '../../domain/entity/user';
 
 export interface UserManagementRepositoryInterface
-	extends DefaultRepositoryInterface<User> {}
+	extends DefaultRepositoryInterface<User> {
+	findByEmail(email: string): Promise<User>;
+}
