@@ -1,23 +1,26 @@
+import { FullName, Identifier, UserRole } from '../value-object';
+
 import { IdentityDomainException } from '../exception/identity-domain.exception';
-import { Identifier, FullName } from '../value-object';
-import { UserRole } from '../value-object/user-role';
 
 export class User {
 	private id: Identifier;
 	private fullName: FullName;
 	private email: string;
 	private role: UserRole;
+	private password: string;
 
 	constructor(
 		id: Identifier,
 		fullName: FullName,
 		email: string,
 		role: UserRole,
+		password: string,
 	) {
 		this.id = id;
 		this.fullName = fullName;
 		this.email = email;
 		this.role = role;
+		this.password = password;
 		this.validate();
 	}
 
@@ -35,6 +38,10 @@ export class User {
 
 	getRole(): UserRole {
 		return this.role;
+	}
+
+	getPassword(): string {
+		return this.password;
 	}
 
 	changeRole(newRole: UserRole): void {

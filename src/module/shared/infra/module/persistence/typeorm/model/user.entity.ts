@@ -26,11 +26,13 @@ export class UserEntity {
 		aLastname: string,
 		anEmail: string,
 		aRole: string,
+		aPassword: string,
 	) {
 		this.id = anId;
 		this.firstname = aFirstname;
 		this.lastname = aLastname;
 		this.email = anEmail;
 		this.role = aRole;
+		this.password = aPassword;
 	}
 }

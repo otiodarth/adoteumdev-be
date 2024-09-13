@@ -1,4 +1,4 @@
-import { FullName, Identifier } from '../../domain/value-object';
+import { FullName, Identifier, UserRole } from '../../domain/value-object';
 
 import { CreateUserInput } from '../input/create-user.input';
 import { EncryptService } from '@identity/domain/service/encrypt-service';
@@ -26,7 +26,7 @@ export class UserManagementApplicationService {
 			new Identifier(),
 			new FullName(input.firstName, input.lastName),
 			input.email,
-			input.role,
+			new UserRole(input.role),
 			hashedPassword,
 		);
 
