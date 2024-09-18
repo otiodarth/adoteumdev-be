@@ -99,4 +99,19 @@ describe('UserManagementApplicationService', () => {
 			new IdentityDomainException('E-mail already exists'),
 		);
 	});
+
+	it('should throw an error if the password is weak', async () => {
+		const invalidUserData = {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'john.doe@example.com',
+			role: 'mentee',
+			password: 'weakPassword',
+			passwordConfirmation: 'weakPassword',
+		};
+
+		await expect(service.createUser(invalidUserData)).rejects.toThrow(
+			new IdentityDomainException('Password must be strong'),
+		);
+	});
 });
