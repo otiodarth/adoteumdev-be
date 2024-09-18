@@ -49,6 +49,21 @@ describe('User unit tests', () => {
 		}).toThrow(new IdentityDomainException('First name is required'));
 	});
 
+	it('should return an IdentityDomainException if firstname has less than 3 characters', () => {
+		const userData = {
+			firstName: 'Jo',
+			lastName: 'Doe',
+			email: 'john@example.com',
+			role: new UserRole('mentee'),
+		};
+
+		expect(() => {
+			new FullName(userData.firstName, userData.lastName);
+		}).toThrow(
+			new IdentityDomainException('First name should have unless 3 characters'),
+		);
+	});
+
 	it('should return an IdentityDomainException if lastname is not provided', () => {
 		const userData = {
 			firstName: 'John',
