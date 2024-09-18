@@ -30,14 +30,16 @@ export class UserManagementApplicationService {
 			);
 		}
 
-		const hashedPassword = await this.encryptService.encrypt(input.password);
 		const user = new User(
 			new Identifier(),
 			new FullName(input.firstName, input.lastName),
 			input.email,
 			new UserRole(input.role),
-			hashedPassword,
+			input.password,
 		);
+
+		const hashedPassword = await this.encryptService.encrypt(input.password);
+		user.changePassword(hashedPassword);
 
 		const createdUser = await this._repository.create(user);
 		return CreateUserOutput.toOutput(createdUser);
