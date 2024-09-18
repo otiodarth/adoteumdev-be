@@ -38,5 +38,11 @@ export class FullName extends ValueObject<string> {
 		if (!this.lastName) {
 			throw new IdentityDomainException('Last name is required');
 		}
+
+		if (this.lastName.length < 3) {
+			throw new IdentityDomainException(
+				'Last name should have unless 3 characters',
+			);
+		}
 	}
 }
