@@ -8,7 +8,7 @@ const validUserData = {
 	lastName: 'Doe',
 	email: 'john@example.com',
 	role: new UserRole('mentee'),
-	password: 'hashedPassword',
+	password: 'P@ssword10',
 };
 
 describe('User unit tests', () => {
@@ -146,5 +146,22 @@ describe('User unit tests', () => {
 		}).toThrow(
 			new IdentityDomainException(`User role ${userData.role} is invalid`),
 		);
+	});
+
+	it('should return an IdentityDomainException if a weak password is provided', () => {
+		const userData = {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'john@example.com',
+			role: new UserRole('mentee'),
+			password: 'weakPassword',
+		};
+
+		const id = new Identifier();
+		const fullName = new FullName(userData.firstName, userData.lastName);
+
+		expect(() => {
+			new User(id, fullName, userData.email, userData.role, userData.password);
+		}).toThrow(new IdentityDomainException('Password must be strong'));
 	});
 });
