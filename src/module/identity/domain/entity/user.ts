@@ -56,5 +56,18 @@ export class User {
 		if (!this.role) {
 			throw new IdentityDomainException('User role is required');
 		}
+
+		this.validatePassword(this.password);
+	}
+
+	validatePassword(plainText: string): boolean | IdentityDomainException {
+		const passwordRegex =
+			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+		const result = passwordRegex.test(plainText);
+
+		if (!result) {
+			throw new IdentityDomainException('Password must be strong');
+		}
+		return true;
 	}
 }
