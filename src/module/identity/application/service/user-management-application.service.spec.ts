@@ -12,12 +12,12 @@ import { UserManagementRepository } from '@persistence/typeorm/repository/user-m
 import { configDbMemory } from '@persistence/typeorm/config/typeorm-config-db-memory';
 
 const validUserData: CreateUserInput = {
-	firstName: 'John',
-	lastName: 'Doe',
-	email: 'john@example.com',
-	role: 'mentee',
-	password: 'Str0ngP@ssw0rd!',
-	passwordConfirmation: 'Str0ngP@ssw0rd!',
+	FirstName: 'John',
+	LastName: 'Doe',
+	EmailAddress: 'john@example.com',
+	Role: 'mentee',
+	Password: 'Str0ngP@ssw0rd!',
+	PasswordConfirmation: 'Str0ngP@ssw0rd!',
 };
 
 describe('UserManagementApplicationService', () => {
@@ -56,26 +56,26 @@ describe('UserManagementApplicationService', () => {
 	it('should create a new user with correct values', async () => {
 		const createdUser = new User(
 			new Identifier(),
-			new FullName(validUserData.firstName, validUserData.lastName),
-			validUserData.email,
-			new UserRole(validUserData.role),
-			validUserData.password,
+			new FullName(validUserData.FirstName, validUserData.LastName),
+			validUserData.EmailAddress,
+			new UserRole(validUserData.Role),
+			validUserData.Password,
 		);
 
 		repository.create = jest.fn().mockResolvedValue(createdUser);
 		encryptService.encrypt = jest
 			.fn()
-			.mockResolvedValue(validUserData.password);
+			.mockResolvedValue(validUserData.Password);
 
 		const result = await service.createUser(validUserData);
 
-		expect(encryptService.encrypt).toHaveBeenCalledWith(validUserData.password);
+		expect(encryptService.encrypt).toHaveBeenCalledWith(validUserData.Password);
 		expect(repository.create).toHaveBeenCalledWith({
-			id: expect.any(Identifier),
-			fullName: new FullName(validUserData.firstName, validUserData.lastName),
-			email: validUserData.email,
-			role: new UserRole(validUserData.role),
-			password: validUserData.password,
+			UserGuid: expect.any(Identifier),
+			FullName: new FullName(validUserData.FirstName, validUserData.LastName),
+			EmailAddress: validUserData.EmailAddress,
+			Role: new UserRole(validUserData.Role),
+			Password: validUserData.Password,
 		});
 		expect(result).toEqual(CreateUserOutput.toOutput(createdUser));
 	});
@@ -83,7 +83,7 @@ describe('UserManagementApplicationService', () => {
 	it('should throw an exception if password and password confirmation do not match', async () => {
 		const invalidUserData = {
 			...validUserData,
-			passwordConfirmation: 'differentPassword',
+			PasswordConfirmation: 'differentPassword',
 		};
 
 		await expect(service.createUser(invalidUserData)).rejects.toThrow(

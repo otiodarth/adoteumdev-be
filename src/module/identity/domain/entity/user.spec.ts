@@ -27,13 +27,13 @@ describe('User unit tests', () => {
 			validUserData.password,
 		);
 
-		expect(newUser.getId()).toBe(id);
+		expect(newUser.getUserGuid()).toBe(id);
 		expect(newUser.getFullName().getFirstName()).toBe(validUserData.firstName);
 		expect(newUser.getFullName().getLastName()).toBe(validUserData.lastName);
 		expect(newUser.getFullName().toString()).toBe(
 			`${validUserData.firstName} ${validUserData.lastName}`,
 		);
-		expect(newUser.getEmail()).toBe(validUserData.email);
+		expect(newUser.getEmailAddress()).toBe(validUserData.email);
 		expect(newUser.getRole()).toBe(validUserData.role);
 	});
 

@@ -1,38 +1,41 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'users' })
+@Entity({ name: 'USERS' })
 export class UserEntity {
-	@PrimaryColumn()
-	id: string;
+	@PrimaryGeneratedColumn('increment', { name: 'US_ID' })
+	UserId: number;
 
-	@Column()
-	firstname: string;
+	@Column({ name: 'US_GUID' })
+	UserGuid: string;
 
-	@Column()
-	lastname: string;
+	@Column({ name: 'US_FNAME' })
+	FirstName: string;
 
-	@Column()
-	email: string;
+	@Column({ name: 'US_LNAME' })
+	LastName: string;
 
-	@Column()
-	role: string;
+	@Column({ name: 'US_EMAIL' })
+	EmailAddress: string;
 
-	@Column()
-	password: string;
+	@Column({ name: 'US_ROLE' })
+	Role: string;
+
+	@Column({ name: 'US_PASSWORD' })
+	Password: string;
 
 	constructor(
-		anId: string,
-		aFirstname: string,
-		aLastname: string,
+		anGuid: string,
+		aFirstName: string,
+		aLastName: string,
 		anEmail: string,
 		aRole: string,
 		aPassword: string,
 	) {
-		this.id = anId;
-		this.firstname = aFirstname;
-		this.lastname = aLastname;
-		this.email = anEmail;
-		this.role = aRole;
-		this.password = aPassword;
+		this.UserGuid = anGuid;
+		this.FirstName = aFirstName;
+		this.LastName = aLastName;
+		this.EmailAddress = anEmail;
+		this.Role = aRole;
+		this.Password = aPassword;
 	}
 }

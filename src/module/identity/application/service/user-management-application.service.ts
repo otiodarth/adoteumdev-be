@@ -17,14 +17,14 @@ export class UserManagementApplicationService {
 
 	async createUser(input: CreateUserInput): Promise<CreateUserOutput> {
 		const userEmailAlreadyExists = await this._repository.findByEmail(
-			input.email,
+			input.EmailAddress,
 		);
 
 		if (userEmailAlreadyExists) {
 			throw new IdentityDomainException('E-mail already exists');
 		}
 
-		if (input.password !== input.passwordConfirmation) {
+		if (input.Password !== input.PasswordConfirmation) {
 			throw new IdentityDomainException(
 				'Password and password confirmation do not match',
 			);
@@ -32,13 +32,13 @@ export class UserManagementApplicationService {
 
 		const user = new User(
 			new Identifier(),
-			new FullName(input.firstName, input.lastName),
-			input.email,
-			new UserRole(input.role),
-			input.password,
+			new FullName(input.FirstName, input.LastName),
+			input.EmailAddress,
+			new UserRole(input.Role),
+			input.Password,
 		);
 
-		const hashedPassword = await this.encryptService.encrypt(input.password);
+		const hashedPassword = await this.encryptService.encrypt(input.Password);
 		user.changePassword(hashedPassword);
 
 		const createdUser = await this._repository.create(user);

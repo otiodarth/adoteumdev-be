@@ -12,7 +12,7 @@ export class Identifier extends ValueObject<string> {
 		super(value);
 	}
 
-	getId(): string {
+	getGuid(): string {
 		return this._value;
 	}
 

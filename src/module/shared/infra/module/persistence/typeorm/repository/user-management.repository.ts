@@ -24,11 +24,11 @@ export class UserManagementRepository
 
 	async update(entity: User): Promise<void> {
 		const userEntity = UserManagementMapper.toEntity(entity);
-		await this.repository.update(entity.getId().getId(), userEntity);
+		await this.repository.update(entity.getUserGuid().getGuid(), userEntity);
 	}
 
-	async find(id: string): Promise<User> {
-		const user = await this.repository.findOne({ where: { id } });
+	async find(id: number): Promise<User> {
+		const user = await this.repository.findOne({ where: { UserId: id } });
 		return UserManagementMapper.toDomain(user);
 	}
 
@@ -39,7 +39,7 @@ export class UserManagementRepository
 
 	async findByEmail(email: string): Promise<User | null> {
 		const user = await this.repository.findOne({
-			where: { email },
+			where: { EmailAddress: email },
 		});
 		if (!user) {
 			return null;

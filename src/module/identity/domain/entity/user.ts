@@ -3,71 +3,71 @@ import { FullName, Identifier, UserRole } from '../value-object';
 import { IdentityDomainException } from '../exception/identity-domain.exception';
 
 export class User {
-	private id: Identifier;
-	private fullName: FullName;
-	private email: string;
-	private role: UserRole;
-	private password: string;
+	private UserGuid: Identifier;
+	private FullName: FullName;
+	private EmailAddress: string;
+	private Role: UserRole;
+	private Password: string;
 
 	constructor(
-		id: Identifier,
-		fullName: FullName,
-		email: string,
-		role: UserRole,
-		password: string,
+		UserGuid: Identifier,
+		FullName: FullName,
+		EmailAddress: string,
+		Role: UserRole,
+		Password: string,
 	) {
-		this.id = id;
-		this.fullName = fullName;
-		this.email = email;
-		this.role = role;
-		this.password = password;
+		this.UserGuid = UserGuid;
+		this.FullName = FullName;
+		this.EmailAddress = EmailAddress;
+		this.Role = Role;
+		this.Password = Password;
 		this.validate();
 	}
 
-	getId(): Identifier {
-		return this.id;
+	getUserGuid(): Identifier {
+		return this.UserGuid;
 	}
 
 	getFullName(): FullName {
-		return this.fullName;
+		return this.FullName;
 	}
 
-	getEmail(): string {
-		return this.email;
+	getEmailAddress(): string {
+		return this.EmailAddress;
 	}
 
 	getRole(): UserRole {
-		return this.role;
+		return this.Role;
 	}
 
 	getPassword(): string {
-		return this.password;
+		return this.Password;
 	}
 
 	changeRole(newRole: UserRole): void {
-		this.role = newRole;
+		this.Role = newRole;
 	}
 
 	changePassword(aPassword: string): void {
-		this.password = aPassword;
+		this.Password = aPassword;
 		this.validatePassword(aPassword);
 	}
 
 	validate(): void {
-		if (!this.email) {
+		if (!this.EmailAddress) {
 			throw new IdentityDomainException('User e-mail is required');
 		}
 
-		if (!this.role) {
+		if (!this.Role) {
 			throw new IdentityDomainException('User role is required');
 		}
 
-		const isPasswordValid = this.validatePassword(this.password);
+		const isPasswordValid = this.validatePassword(this.Password);
 		if (!isPasswordValid) {
 			throw new IdentityDomainException('Password must be strong');
 		}
 
-		const isEmailValid = this.validateEmail(this.email);
+		const isEmailValid = this.validateEmail(this.EmailAddress);
 		if (!isEmailValid) {
 			throw new IdentityDomainException('Must be a valid e-mail address');
 		}
