@@ -16,8 +16,8 @@ const validUserData: CreateUserInput = {
 	lastName: 'Doe',
 	email: 'john@example.com',
 	role: 'mentee',
-	password: 'plainText',
-	passwordConfirmation: 'plainText',
+	password: 'Str0ngP@ssw0rd!',
+	passwordConfirmation: 'Str0ngP@ssw0rd!',
 };
 
 describe('UserManagementApplicationService', () => {
@@ -53,16 +53,19 @@ describe('UserManagementApplicationService', () => {
 		encryptService = module.get<EncryptService>(EncryptService);
 	});
 
-	it('should create a new user and with correct values', async () => {
+	it('should create a new user with correct values', async () => {
 		const createdUser = new User(
 			new Identifier(),
 			new FullName(validUserData.firstName, validUserData.lastName),
 			validUserData.email,
 			new UserRole(validUserData.role),
-			'hashedPassword',
+			validUserData.password,
 		);
 
 		repository.create = jest.fn().mockResolvedValue(createdUser);
+		encryptService.encrypt = jest
+			.fn()
+			.mockResolvedValue(validUserData.password);
 
 		const result = await service.createUser(validUserData);
 
@@ -72,9 +75,8 @@ describe('UserManagementApplicationService', () => {
 			fullName: new FullName(validUserData.firstName, validUserData.lastName),
 			email: validUserData.email,
 			role: new UserRole(validUserData.role),
-			password: 'hashedPassword',
+			password: validUserData.password,
 		});
-
 		expect(result).toEqual(CreateUserOutput.toOutput(createdUser));
 	});
 
