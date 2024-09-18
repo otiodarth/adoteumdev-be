@@ -107,6 +107,23 @@ describe('User unit tests', () => {
 		}).toThrow(new IdentityDomainException('User e-mail is required'));
 	});
 
+	it('should return an IdentityDomainException if email is invalid', () => {
+		const userData = {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'invalidemail.com',
+			role: new UserRole('mentee'),
+			password: 'P@ssword10',
+		};
+
+		const id = new Identifier();
+		const fullName = new FullName(userData.firstName, userData.lastName);
+
+		expect(() => {
+			new User(id, fullName, userData.email, userData.role, userData.password);
+		}).toThrow(new IdentityDomainException('Must be a valid e-mail address'));
+	});
+
 	it('should return an IdentityDomainException if user role is not provided', () => {
 		const userData = {
 			firstName: 'John',

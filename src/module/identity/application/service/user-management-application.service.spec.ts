@@ -100,6 +100,21 @@ describe('UserManagementApplicationService', () => {
 		);
 	});
 
+	it('should throw an error if the email is invalid', async () => {
+		const invalidUserData = {
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'invalidemail.com',
+			role: 'mentee',
+			password: 'P@ssword10',
+			passwordConfirmation: 'P@ssword10',
+		};
+
+		await expect(service.createUser(invalidUserData)).rejects.toThrow(
+			new IdentityDomainException('Must be a valid e-mail address'),
+		);
+	});
+
 	it('should throw an error if the password is weak', async () => {
 		const invalidUserData = {
 			firstName: 'John',
