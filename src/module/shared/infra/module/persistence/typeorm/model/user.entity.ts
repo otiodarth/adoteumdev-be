@@ -1,7 +1,8 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { DefaultEntity } from './default.entity';
 
 @Entity({ name: 'USERS' })
-export class UserEntity {
+export class UserEntity extends DefaultEntity {
 	@PrimaryGeneratedColumn('increment', { name: 'US_ID' })
 	UserId: number;
 
@@ -31,6 +32,7 @@ export class UserEntity {
 		aRole: string,
 		aPassword: string,
 	) {
+		super();
 		this.UserGuid = anGuid;
 		this.FirstName = aFirstName;
 		this.LastName = aLastName;
