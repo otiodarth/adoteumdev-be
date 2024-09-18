@@ -48,6 +48,11 @@ export class User {
 		this.role = newRole;
 	}
 
+	changePassword(aPassword: string): void {
+		this.password = aPassword;
+		this.validatePassword(aPassword);
+	}
+
 	validate(): void {
 		if (!this.email) {
 			throw new IdentityDomainException('User e-mail is required');
@@ -57,17 +62,25 @@ export class User {
 			throw new IdentityDomainException('User role is required');
 		}
 
-		this.validatePassword(this.password);
-	}
-
-	validatePassword(plainText: string): boolean | IdentityDomainException {
-		const passwordRegex =
-			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-		const result = passwordRegex.test(plainText);
-
-		if (!result) {
+		const isPasswordValid = this.validatePassword(this.password);
+		if (!isPasswordValid) {
 			throw new IdentityDomainException('Password must be strong');
 		}
-		return true;
+
+		const isEmailValid = this.validateEmail(this.email);
+		if (!isEmailValid) {
+			throw new IdentityDomainException('Must be a valid e-mail address');
+		}
+	}
+
+	validatePassword(plainText: string): boolean {
+		const passwordRegex =
+			/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+		return passwordRegex.test(plainText);
+	}
+
+	validateEmail(emailAddress: string): boolean {
+		const emailRegex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+(\.[a-z]+)?$/i;
+		return emailRegex.test(emailAddress);
 	}
 }
