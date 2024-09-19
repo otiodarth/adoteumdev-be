@@ -1,10 +1,3 @@
-export class IdentityDomainException extends Error {
-	message: string;
-	name: string;
+import { DomainException } from '@shared/exception/domain-exception';
 
-	constructor(aMessage: string) {
-		super(aMessage);
-		this.message = aMessage;
-		this.name = 'IdentityDomainException';
-	}
-}
+export class IdentityDomainException extends DomainException {}

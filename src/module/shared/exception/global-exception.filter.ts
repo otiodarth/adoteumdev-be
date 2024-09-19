@@ -1,3 +1,4 @@
+import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
 import {
 	ArgumentsHost,
 	Catch,
@@ -6,7 +7,6 @@ import {
 	HttpStatus,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { IdentityDomainException } from '../../identity/domain/exception/identity-domain.exception';
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
@@ -14,7 +14,7 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 		const ctx = host.switchToHttp();
 		const response = ctx.getResponse<Response>();
 		const request = ctx.getRequest<Request>();
-		let status =
+		const status =
 			exception instanceof HttpException
 				? exception.getStatus()
 				: HttpStatus.INTERNAL_SERVER_ERROR;
@@ -27,7 +27,6 @@ export class GlobalExceptionFilter implements ExceptionFilter {
 
 		if (exception instanceof IdentityDomainException) {
 			message = exception.message;
-			status = HttpStatus.BAD_REQUEST;
 			exceptionDetails = {
 				name: exception.name,
 				message: exception.message,
