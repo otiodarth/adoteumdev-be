@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { UserManagementRepositoryInterface } from '../../../../../../identity/persistence/repository/user-management-repository.interface';
-import { User } from '../../../../../../identity/domain/entity/user';
-import { UserEntity } from '../model/user.entity';
+import { User } from '@identity/domain/entity/user';
+import { UserManagementRepositoryInterface } from '@identity/persistence/repository/user-management-repository.interface';
 import { UserManagementMapper } from '../mapper/user-management.mapper';
+import { UserEntity } from '../model/user.entity';
 
 @Injectable()
 export class UserManagementRepository
@@ -24,7 +24,10 @@ export class UserManagementRepository
 
 	async update(entity: User): Promise<void> {
 		const userEntity = UserManagementMapper.toEntity(entity);
-		await this.repository.update(entity.getUserGuid().getGuid(), userEntity);
+		await this.repository.update(
+			entity.getUserGuid().getGuid(),
+			userEntity,
+		);
 	}
 
 	async find(id: number): Promise<User> {
