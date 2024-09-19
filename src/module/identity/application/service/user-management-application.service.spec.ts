@@ -1,15 +1,15 @@
 import { FullName, Identifier, UserRole } from '@identity/domain/value-object';
 import { Test, TestingModule } from '@nestjs/testing';
 
+import { User } from '@identity/domain/entity/user';
+import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
+import { EncryptService } from '@identity/domain/service/encrypt-service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { configDbMemory } from '@persistence/typeorm/config/typeorm-config-db-memory';
+import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
 import { CreateUserInput } from '../input/create-user.input';
 import { CreateUserOutput } from '../output/create-user.output';
-import { EncryptService } from '@identity/domain/service/encrypt-service';
-import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '@identity/domain/entity/user';
 import { UserManagementApplicationService } from './user-management-application.service';
-import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
-import { configDbMemory } from '@persistence/typeorm/config/typeorm-config-db-memory';
 
 const validUserData: CreateUserInput = {
 	FirstName: 'John',

@@ -1,7 +1,7 @@
 import { FullName, Identifier, UserRole } from '../value-object';
 
-import { IdentityDomainException } from '../exception/identity-domain.exception';
 import { User } from '../entity/user';
+import { IdentityDomainException } from '../exception/identity-domain.exception';
 
 const validUserData = {
 	firstName: 'John',

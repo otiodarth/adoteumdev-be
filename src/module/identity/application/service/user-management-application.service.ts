@@ -1,12 +1,12 @@
-import { FullName, Identifier, UserRole } from '../../domain/value-object';
+import { FullName, Identifier, UserRole } from '@identity/domain/value-object';
 
+import { User } from '@identity/domain/entity/user';
+import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
+import { EncryptService } from '@identity/domain/service/encrypt-service';
+import { Injectable } from '@nestjs/common';
+import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
 import { CreateUserInput } from '../input/create-user.input';
 import { CreateUserOutput } from '../output/create-user.output';
-import { EncryptService } from '@identity/domain/service/encrypt-service';
-import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
-import { Injectable } from '@nestjs/common';
-import { User } from '../../domain/entity/user';
-import { UserManagementRepository } from '../../../shared/infra/module/persistence/typeorm/repository/user-management.repository';
 
 @Injectable()
 export class UserManagementApplicationService {
