@@ -1,10 +1,10 @@
 import { FullName, Identifier, UserRole } from '@identity/domain/value-object';
 
 import { User } from '@identity/domain/entity/user';
-import { IdentityDomainException } from '@identity/domain/exception/identity-domain.exception';
 import { EncryptService } from '@identity/domain/service/encrypt-service';
 import { Injectable } from '@nestjs/common';
 import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
+import { IdentityApplicationException } from '../exception/identity-application.exception';
 import { CreateUserInput } from '../input/create-user.input';
 import { CreateUserOutput } from '../output/create-user.output';
 
@@ -21,11 +21,11 @@ export class UserManagementApplicationService {
 		);
 
 		if (userEmailAlreadyExists) {
-			throw new IdentityDomainException('E-mail already exists');
+			throw new IdentityApplicationException('E-mail already exists');
 		}
 
 		if (input.Password !== input.PasswordConfirmation) {
-			throw new IdentityDomainException(
+			throw new IdentityApplicationException(
 				'Password and password confirmation do not match',
 			);
 		}
