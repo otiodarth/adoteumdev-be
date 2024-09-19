@@ -1,0 +1,16 @@
+{
+	"moduleFileExtensions": ["js", "json", "ts"],
+	"rootDir": "src",
+	"testRegex": ".*\\.e2e\\.spec\\.ts$",
+	"transform": {
+		"^.+\\.(t|j)s$": "ts-jest"
+	},
+	"collectCoverageFrom": ["**/*.(t|j)s"],
+	"moduleNameMapper": {
+		"@criptography/(.*)$": "<rootDir>/module/shared/infra/module/criptography/$1",
+		"@identity/(.*)$": "<rootDir>/module/identity/$1",
+		"@persistence/(.*)$": "<rootDir>/module/shared/infra/module/persistence/$1"
+	},
+	"coverageDirectory": "../coverage",
+	"testEnvironment": "node"
+}

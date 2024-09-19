@@ -5,6 +5,5 @@ export const configDbMemory: TypeOrmModuleOptions = {
 	type: 'sqlite',
 	database: ':memory:',
 	synchronize: true,
-	dropSchema: true,
 	entities: [UserEntity],
 };

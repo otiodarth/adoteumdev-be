@@ -1,0 +1,15 @@
+version: '3'
+
+name: 'adoteumdev'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: adoteumdev-database
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - .data:/var/lib/postgresql/data
