@@ -49,7 +49,9 @@ describe('UserManagementApplicationService', () => {
 		service = module.get<UserManagementApplicationService>(
 			UserManagementApplicationService,
 		);
-		repository = module.get<UserManagementRepository>(UserManagementRepository);
+		repository = module.get<UserManagementRepository>(
+			UserManagementRepository,
+		);
 		encryptService = module.get<EncryptService>(EncryptService);
 	});
 
@@ -69,10 +71,15 @@ describe('UserManagementApplicationService', () => {
 
 		const result = await service.createUser(validUserData);
 
-		expect(encryptService.encrypt).toHaveBeenCalledWith(validUserData.Password);
+		expect(encryptService.encrypt).toHaveBeenCalledWith(
+			validUserData.Password,
+		);
 		expect(repository.create).toHaveBeenCalledWith({
 			UserGuid: expect.any(Identifier),
-			FullName: new FullName(validUserData.FirstName, validUserData.LastName),
+			FullName: new FullName(
+				validUserData.FirstName,
+				validUserData.LastName,
+			),
 			EmailAddress: validUserData.EmailAddress,
 			Role: new UserRole(validUserData.Role),
 			Password: validUserData.Password,
