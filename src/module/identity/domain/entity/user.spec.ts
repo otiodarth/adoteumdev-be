@@ -4,181 +4,185 @@ import { User } from '../entity/user';
 import { IdentityDomainException } from '../exception/identity-domain.exception';
 
 const validUserData = {
-	firstName: 'John',
-	lastName: 'Doe',
-	email: 'john@example.com',
-	role: new UserRole('mentee'),
-	password: 'P@ssword10',
+	FirstName: 'John',
+	LastName: 'Doe',
+	EmailAddress: 'john@example.com',
+	Role: new UserRole('mentee'),
+	Password: 'P@ssword10',
 };
 
 describe('User unit tests', () => {
 	it('should instantiate a new user object successfully', () => {
-		const id = new Identifier();
+		const guid = new Identifier();
 		const fullName = new FullName(
-			validUserData.firstName,
-			validUserData.lastName,
+			validUserData.FirstName,
+			validUserData.LastName,
 		);
 
 		const newUser = new User(
-			id,
+			guid,
 			fullName,
-			validUserData.email,
-			validUserData.role,
-			validUserData.password,
+			validUserData.EmailAddress,
+			validUserData.Role,
+			validUserData.Password,
 		);
 
-		expect(newUser.getUserGuid()).toBe(id);
-		expect(newUser.getFullName().getFirstName()).toBe(validUserData.firstName);
-		expect(newUser.getFullName().getLastName()).toBe(validUserData.lastName);
-		expect(newUser.getFullName().toString()).toBe(
-			`${validUserData.firstName} ${validUserData.lastName}`,
+		expect(newUser.getUserGuid()).toBe(guid);
+		expect(newUser.getFullName().getFirstName()).toBe(
+			validUserData.FirstName,
 		);
-		expect(newUser.getEmailAddress()).toBe(validUserData.email);
-		expect(newUser.getRole()).toBe(validUserData.role);
+		expect(newUser.getFullName().getLastName()).toBe(
+			validUserData.LastName,
+		);
+		expect(newUser.getFullName().toString()).toBe(
+			`${validUserData.FirstName} ${validUserData.LastName}`,
+		);
+		expect(newUser.getEmailAddress()).toBe(validUserData.EmailAddress);
+		expect(newUser.getRole()).toBe(validUserData.Role);
 	});
 
 	it('should return an IdentityDomainException if firstname is not provided', () => {
-		const userData = {
-			lastName: 'Doe',
-			email: 'john@example.com',
-			role: new UserRole('mentee'),
-		};
-
 		expect(() => {
-			new FullName(null, userData.lastName);
+			new User(
+				new Identifier(),
+				new FullName(null, validUserData.LastName),
+				validUserData.EmailAddress,
+				validUserData.Role,
+				validUserData.Password,
+			);
 		}).toThrow(new IdentityDomainException('First name is required'));
 	});
 
 	it('should return an IdentityDomainException if firstname has less than 3 characters', () => {
-		const userData = {
-			firstName: 'Jo',
-			lastName: 'Doe',
-			email: 'john@example.com',
-			role: new UserRole('mentee'),
+		const newUser = {
+			...validUserData,
+			FirstName: 'Jo',
 		};
 
 		expect(() => {
-			new FullName(userData.firstName, userData.lastName);
+			new User(
+				new Identifier(),
+				new FullName(newUser.FirstName, newUser.LastName),
+				validUserData.EmailAddress,
+				validUserData.Role,
+				validUserData.Password,
+			);
 		}).toThrow(
-			new IdentityDomainException('First name should have unless 3 characters'),
+			new IdentityDomainException(
+				'First name should have unless 3 characters',
+			),
 		);
 	});
 
 	it('should return an IdentityDomainException if lastname is not provided', () => {
-		const userData = {
-			firstName: 'John',
-			email: 'john@example.com',
-			role: new UserRole('mentee'),
-		};
-
 		expect(() => {
-			new FullName(userData.firstName, null);
+			new User(
+				new Identifier(),
+				new FullName(validUserData.FirstName, null),
+				validUserData.EmailAddress,
+				validUserData.Role,
+				validUserData.Password,
+			);
 		}).toThrow(new IdentityDomainException('Last name is required'));
 	});
 
 	it('should return an IdentityDomainException if lastname has less than 3 characters', () => {
-		const userData = {
-			firstName: 'John',
-			lastName: 'Do',
-			email: 'john@example.com',
-			role: new UserRole('mentee'),
+		const newUser = {
+			...validUserData,
+			LastName: 'Do',
 		};
 
 		expect(() => {
-			new FullName(userData.firstName, userData.lastName);
+			new User(
+				new Identifier(),
+				new FullName(newUser.FirstName, newUser.LastName),
+				newUser.EmailAddress,
+				newUser.Role,
+				newUser.Password,
+			);
 		}).toThrow(
-			new IdentityDomainException('Last name should have unless 3 characters'),
+			new IdentityDomainException(
+				'Last name should have unless 3 characters',
+			),
 		);
 	});
 
 	it('should return an IdentityDomainException if email is not provided', () => {
-		const userData = {
-			firstName: 'John',
-			lastName: 'Doe',
-			role: new UserRole('mentee'),
-			password: 'hashedPassword',
-		};
-
-		const id = new Identifier();
-		const fullName = new FullName(userData.firstName, userData.lastName);
-
 		expect(() => {
-			new User(id, fullName, null, userData.role, userData.password);
+			new User(
+				new Identifier(),
+				new FullName(validUserData.FirstName, validUserData.LastName),
+				null,
+				validUserData.Role,
+				validUserData.Password,
+			);
 		}).toThrow(new IdentityDomainException('User e-mail is required'));
 	});
 
 	it('should return an IdentityDomainException if email is invalid', () => {
-		const userData = {
-			firstName: 'John',
-			lastName: 'Doe',
-			email: 'invalidemail.com',
-			role: new UserRole('mentee'),
-			password: 'P@ssword10',
+		const newUser = {
+			...validUserData,
+			EmailAddress: 'invalidemail.com',
 		};
 
-		const id = new Identifier();
-		const fullName = new FullName(userData.firstName, userData.lastName);
-
 		expect(() => {
-			new User(id, fullName, userData.email, userData.role, userData.password);
-		}).toThrow(new IdentityDomainException('Must be a valid e-mail address'));
+			new User(
+				new Identifier(),
+				new FullName(newUser.FirstName, newUser.LastName),
+				newUser.EmailAddress,
+				newUser.Role,
+				newUser.Password,
+			);
+		}).toThrow(
+			new IdentityDomainException('Must be a valid e-mail address'),
+		);
 	});
 
 	it('should return an IdentityDomainException if user role is not provided', () => {
-		const userData = {
-			firstName: 'John',
-			lastName: 'Doe',
-			email: 'john@example.com',
-			password: 'hashedPassword',
-		};
-
-		const id = new Identifier();
-		const fullName = new FullName(userData.firstName, userData.lastName);
-
 		expect(() => {
-			new User(id, fullName, userData.email, null, userData.password);
+			new User(
+				new Identifier(),
+				new FullName(validUserData.FirstName, validUserData.LastName),
+				validUserData.EmailAddress,
+				null,
+				validUserData.Password,
+			);
 		}).toThrow(new IdentityDomainException('User role is required'));
 	});
 
 	it('should return an IdentityDomainException if user role is invalid', () => {
-		const userData = {
-			firstName: 'John',
-			lastName: 'Doe',
-			email: 'john@example.com',
-			role: 'example',
-			password: 'hashedPassword',
+		const newUser = {
+			...validUserData,
+			Role: 'example.com',
 		};
-
-		const id = new Identifier();
-		const fullName = new FullName(userData.firstName, userData.lastName);
 
 		expect(() => {
 			new User(
-				id,
-				fullName,
-				userData.email,
-				new UserRole(userData.role),
-				userData.password,
+				new Identifier(),
+				new FullName(newUser.FirstName, newUser.LastName),
+				newUser.EmailAddress,
+				new UserRole(newUser.Role),
+				newUser.Password,
 			);
 		}).toThrow(
-			new IdentityDomainException(`User role ${userData.role} is invalid`),
+			new IdentityDomainException(`User role ${newUser.Role} is invalid`),
 		);
 	});
 
 	it('should return an IdentityDomainException if a weak password is provided', () => {
-		const userData = {
-			firstName: 'John',
-			lastName: 'Doe',
-			email: 'john@example.com',
-			role: new UserRole('mentee'),
-			password: 'weakPassword',
+		const newUser = {
+			...validUserData,
+			Password: 'weakPassword.com',
 		};
 
-		const id = new Identifier();
-		const fullName = new FullName(userData.firstName, userData.lastName);
-
 		expect(() => {
-			new User(id, fullName, userData.email, userData.role, userData.password);
+			new User(
+				new Identifier(),
+				new FullName(newUser.FirstName, newUser.LastName),
+				newUser.EmailAddress,
+				newUser.Role,
+				newUser.Password,
+			);
 		}).toThrow(new IdentityDomainException('Password must be strong'));
 	});
 });
