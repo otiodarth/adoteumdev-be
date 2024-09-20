@@ -8,7 +8,7 @@ type UserOutput = {
 	Role: string;
 };
 
-export class CreateUserOutput {
+export class DefaultUserOutput {
 	static toOutput(user: User): UserOutput {
 		return {
 			UserGuid: user.getUserGuid().getGuid(),

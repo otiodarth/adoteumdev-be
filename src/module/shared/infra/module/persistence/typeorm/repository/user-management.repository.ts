@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 
 import { User } from '@identity/domain/entity/user';
 import { UserManagementRepositoryInterface } from '@identity/persistence/repository/user-management-repository.interface';
@@ -22,12 +22,8 @@ export class UserManagementRepository
 		return UserManagementMapper.toDomain(createdUser);
 	}
 
-	async update(entity: User): Promise<void> {
-		const userEntity = UserManagementMapper.toEntity(entity);
-		await this.repository.update(
-			entity.getUserGuid().getGuid(),
-			userEntity,
-		);
+	async update(guid: string, entity: Partial<User>): Promise<void> {
+		await this.repository.update(guid, entity as DeepPartial<UserEntity>);
 	}
 
 	async find(id: number): Promise<User> {
@@ -43,6 +39,16 @@ export class UserManagementRepository
 	async findByEmail(email: string): Promise<User | null> {
 		const user = await this.repository.findOne({
 			where: { EmailAddress: email },
+		});
+		if (!user) {
+			return null;
+		}
+		return UserManagementMapper.toDomain(user);
+	}
+
+	async findByGuid(guid: string): Promise<User | null> {
+		const user = await this.repository.findOne({
+			where: { UserGuid: guid },
 		});
 		if (!user) {
 			return null;

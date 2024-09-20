@@ -6,7 +6,8 @@ import { Injectable } from '@nestjs/common';
 import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
 import { IdentityApplicationException } from '../exception/identity-application.exception';
 import { CreateUserInput } from '../input/create-user.input';
-import { CreateUserOutput } from '../output/create-user.output';
+import { UpdateUserInput } from '../input/update-user.input';
+import { DefaultUserOutput } from '../output/default-user.output';
 
 @Injectable()
 export class UserManagementApplicationService {
@@ -15,7 +16,7 @@ export class UserManagementApplicationService {
 		private readonly encryptService: EncryptService,
 	) {}
 
-	async createUser(input: CreateUserInput): Promise<CreateUserOutput> {
+	async createUser(input: CreateUserInput): Promise<DefaultUserOutput> {
 		const userEmailAlreadyExists = await this._repository.findByEmail(
 			input.EmailAddress,
 		);
@@ -44,6 +45,15 @@ export class UserManagementApplicationService {
 		user.changePassword(hashedPassword);
 
 		const createdUser = await this._repository.create(user);
-		return CreateUserOutput.toOutput(createdUser);
+		return DefaultUserOutput.toOutput(createdUser);
+	}
+
+	async updateUser(
+		guid: string,
+		input: UpdateUserInput,
+	): Promise<DefaultUserOutput> {
+		await this._repository.update(guid, input);
+		const updatedUser = await this._repository.findByGuid(guid);
+		return DefaultUserOutput.toOutput(updatedUser);
 	}
 }
