@@ -8,7 +8,8 @@ import { configDbMemory } from '@persistence/typeorm/config/typeorm-config-db-me
 import { UserManagementRepository } from '@persistence/typeorm/repository/user-management.repository';
 import { IdentityApplicationException } from '../exception/identity-application.exception';
 import { CreateUserInput } from '../input/create-user.input';
-import { CreateUserOutput } from '../output/create-user.output';
+import { UpdateUserInput } from '../input/update-user.input';
+import { DefaultUserOutput } from '../output/default-user.output';
 import { UserManagementApplicationService } from './user-management-application.service';
 
 const validUserData: CreateUserInput = {
@@ -34,7 +35,9 @@ describe('UserManagementApplicationService', () => {
 					provide: UserManagementRepository,
 					useValue: {
 						create: jest.fn(),
+						update: jest.fn(),
 						findByEmail: jest.fn(),
+						findByGuid: jest.fn(),
 					},
 				},
 				{
@@ -84,7 +87,7 @@ describe('UserManagementApplicationService', () => {
 			Role: new UserRole(validUserData.Role),
 			Password: validUserData.Password,
 		});
-		expect(result).toEqual(CreateUserOutput.toOutput(createdUser));
+		expect(result).toEqual(DefaultUserOutput.toOutput(createdUser));
 	});
 
 	it('should throw an exception if password and password confirmation do not match', async () => {
@@ -105,5 +108,28 @@ describe('UserManagementApplicationService', () => {
 		expect(service.createUser(validUserData)).rejects.toThrow(
 			new IdentityApplicationException('E-mail already exists'),
 		);
+	});
+
+	it('should update firstname successfully', async () => {
+		const userGuid = 'valid_uuid';
+		const updateUserData: UpdateUserInput = {
+			FirstName: 'Joel',
+		};
+
+		repository.findByGuid = jest.fn().mockResolvedValue(validUserData);
+		repository.update = jest.fn().mockResolvedValue(undefined);
+
+		const updatedUserData = new User(
+			new Identifier(),
+			new FullName('Joel', validUserData.LastName),
+			validUserData.EmailAddress,
+			new UserRole(validUserData.Role),
+			validUserData.Password,
+		);
+
+		repository.findByGuid = jest.fn().mockResolvedValue(updatedUserData);
+
+		const result = await service.updateUser(userGuid, updateUserData);
+		expect(result).toEqual(DefaultUserOutput.toOutput(updatedUserData));
 	});
 });
